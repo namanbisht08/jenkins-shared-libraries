@@ -5,17 +5,15 @@ def ImagePublishECR(String REGION, String repo_name, String DockerfileName, Stri
 	DockerImage = docker.build("${repo_name}", "-f ${DockerfileName} ${DockerfilePath}")
 
 	println "Getting login to AWS ECR"
-//	sh "$(aws ecr get-login --no-include-email --region ${REGION})"
         def login = sh (
                             script: "aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${REGION}.amazonaws.com",
                             returnStdout: true
                         )
         
 
-        login.execute().text
+        //login.execute().text
 	println "Pushing Image to ECR"
 	DockerImage.push("${version}")
-       // DockerImage.push("latest")
 }
 
 def ImageTagCheck(String repo_name, String version) {
