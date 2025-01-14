@@ -1,13 +1,13 @@
 package lib.namanbisht08;
 
-def ImagePublishECR(String REGION, String repo_name, String DockerfileName, String DockerfilePath, String version ) {
+def ImagePublishECR(String REGION, String repo_name, String DockerfileName, String DockerfilePath, String version, String accountId) {		
 	println "Building Docker Image"
 	DockerImage = docker.build("${repo_name}", "-f ${DockerfileName} ${DockerfilePath}")
 
 	println "Getting login to AWS ECR"
 //	sh "$(aws ecr get-login --no-include-email --region ${REGION})"
         def login = sh (
-                            script: "aws ecr get-login --no-include-email --region ${REGION} ",
+                            script: "aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${REGION}.amazonaws.com",
                             returnStdout: true
                         )
         
