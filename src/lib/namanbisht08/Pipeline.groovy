@@ -20,10 +20,10 @@ def Creating_updated_task_defination(String REGION, String TaskDefinationFamily,
     println "lib.namanbisht08: Creating an Updated Revision of Task Definition"
 
     #def taskDefFile = "${TaskDefinationFamily}-task-def.json"
-    sh "aws ecs describe-task-definition --task-definition ${TaskDefinationFamily} --region ${REGION} > '${TaskDefinationFamily}-task-def.json' "
-    sh "jq '.taskDefinition.containerDefinitions[0].image = \"${repo_name}:${version}\"' ${taskDefFile} > '"${TaskDefinationFamily}-task-def.json"' "
+    sh "aws ecs describe-task-definition --task-definition ${TaskDefinationFamily} --region ${REGION} > '${TaskDefinationFamily}-task-def.json'"
+    sh "jq '.taskDefinition.containerDefinitions[0].image = \"${repo_name}:${version}\"' '${TaskDefinationFamily}-task-def.json' > '${TaskDefinationFamily}-task-def.json'"
     sh "aws ecs register-task-definition --family ${TaskDefinationFamily} --cli-input-json file://'${TaskDefinationFamily}-task-def.json' --region ${REGION}"
-    sh "rm -f '"${TaskDefinationFamily}-task-def.json"'"
+    sh "rm -f '${TaskDefinationFamily}-task-def.json'"
 
     println "====== New Task Definition Updated and Registered Successfully ======"
 }
