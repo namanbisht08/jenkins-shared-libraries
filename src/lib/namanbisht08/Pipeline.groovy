@@ -24,9 +24,9 @@ def Creating_updated_task_definition(String REGION, String TaskDefinitionFamily,
     """
 
     sh """
-        jq 'del(.taskDefinitionArn) | .taskDefinition.containerDefinitions[0].image = "${repoName}:${version}"' ${TaskDefinitionFamily}-task-def.json > updated-${TaskDefinitionFamily}-task-def.json
+        jq 'del(.taskDefinitionArn) | .taskDefinition.containerDefinitions[0].image = "${repoName}:${version}" | .taskDefinition.tags = [] | .taskDefinition.compatibilities = null | .taskDefinition.networkMode = "awsvpc" | .taskDefinition.executionRoleArn = "arn:aws:iam::187897899156:role/ecsTaskExecutionRole" | {family: "${TaskDefinitionFamily}", containerDefinitions: .taskDefinition.containerDefinitions, memory: .taskDefinition.memory, cpu: .taskDefinition.cpu, volumes: .taskDefinition.volumes, placementConstraints: .taskDefinition.placementConstraints, requiresCompatibilities: .taskDefinition.requiresCompatibilities, networkMode: .taskDefinition.networkMode, executionRoleArn: .taskDefinition.executionRoleArn}' ${TaskDefinitionFamily}-task-def.json > updated-${TaskDefinitionFamily}-task-def.json
     """
-
+	
     sh """
         aws ecs register-task-definition --family ${TaskDefinitionFamily} --cli-input-json file://updated-${TaskDefinitionFamily}-task-def.json --region ${REGION}
     """
