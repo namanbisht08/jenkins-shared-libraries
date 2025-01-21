@@ -24,7 +24,7 @@ def Creating_updated_task_definition(String REGION, String TaskDefinitionFamily,
     """
 
     sh """
-        jq '.taskDefinition.containerDefinitions[0].image = "${repoName}:${version}" | del(.taskDefinitionArn)' ${TaskDefinitionFamily}-task-def.json > updated-${TaskDefinitionFamily}-task-def.json
+        jq 'del(.taskDefinitionArn) | .taskDefinition.containerDefinitions[0].image = "${repoName}:${version}"' ${TaskDefinitionFamily}-task-def.json > updated-${TaskDefinitionFamily}-task-def.json
     """
 
     sh """
