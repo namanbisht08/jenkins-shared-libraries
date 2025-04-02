@@ -17,24 +17,6 @@ def ImagePublishECR(String REGION, String repo_name, String DockerfileName, Stri
 }
 
 
-def ImagePublishECR_improvised(String REGION, String repo_name, String DockerfileName, String DockerfilePath, String version, String accountId) {		
-	println "Building Docker Image"
-	DockerImage = docker.build("${repo_name}:${version}", "-f ${DockerfileName}", DockerfilePath)
-	
-	println "Getting login to AWS ECR"
-        def login = sh (
-                            script: "aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${REGION}.amazonaws.com",
-                            returnStdout: true
-                        )
-        
-
-        //login.execute().text
-	println "Pushing Image to ECR"
-	DockerImage.push("${version}")
-}
-
-
-
 def Creating_updated_task_definition(String REGION, String TaskDefinitionFamily, String repoName, String version) {
     println "lib.namanbisht08: Creating an Updated Revision of Task Definition"
 
