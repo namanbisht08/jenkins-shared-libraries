@@ -2,8 +2,8 @@ package lib.namanbisht08;
 
 def ImagePublishECR(String REGION, String repo_name, String DockerfileName, String DockerfilePath, String version, String accountId) {		
 	println "Building Docker Image"
-	//DockerImage = docker.build("${repo_name}", "-f ${DockerfileName} ${DockerfilePath}")
-	DockerImage = docker.build("${repo_name}", "--no-cache -f ${DockerfileName} ${DockerfilePath}")
+	DockerImage = docker.build("${repo_name}", "-f ${DockerfileName} ${DockerfilePath}")
+	//DockerImage = docker.build("${repo_name}", "--no-cache -f ${DockerfileName} ${DockerfilePath}")
 
 	println "Getting login to AWS ECR"
         def login = sh (
